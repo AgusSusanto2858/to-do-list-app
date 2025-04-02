@@ -88,7 +88,10 @@ function addTask() {
     // Reset form
     taskInput.value = '';
     prioritySelect.value = ''; // Reset ke default
-    dueDateInput.value = dueDate; // Pertahankan tanggal
+    
+    // Mengatur tanggal kembali ke hari ini setelah submit
+    const today = new Date();
+    dueDateInput.value = today.toISOString().split('T')[0];
 
     saveTasks();
     renderTasks();
