@@ -1,0 +1,288 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lexend:wght@100..900&display=swap');
+
+*{
+    font-family: "DM Sans", sans-serif;
+}
+
+body{
+    background-color: #e9ecef;
+    margin: 0;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    padding-bottom: 5px;
+    align-items: center;
+    margin-left: 8px;
+
+}
+
+.brand {
+    font-family: "Copperplate", "Copperplate Gothic Light", fantasy;
+    font-size: 20pt;
+    font-weight: bold;
+    letter-spacing: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.logo {
+    color: darkorange;
+    text-transform: capitalize;
+}
+
+.in {
+    color: blue;
+    margin-left: 4px;
+}
+
+.profile{
+    list-style-type: none;
+    font-size: 12pt;
+    color: #636262;
+    font-weight: 600;
+    align-items: center;
+    margin-right: 12px;
+}
+
+.timestamp{
+    font-size: 9pt;
+    text-align: end;
+}
+
+.input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+
+.container{
+    background-color: #fff;
+    padding: 20px;
+    margin: 30px;
+    border-radius: 6px;
+    border: 1px solid #cccccca6;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.title{
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.wrapper-header-task{
+    display: flex;
+    justify-content: space-between;
+}
+
+.select-wrapper{
+    position: relative;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    padding: 10px;
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+.priority-section {
+    display: flex;
+    gap: 10px;
+}
+
+.priority-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.low { background-color: #90EE90; }
+.medium { background-color: #FFD700; }
+.high { background-color: #FF6347; }
+
+.columns {
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+}
+
+.column {
+    flex: 1;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.overdue {
+    border: 2px solid #ff0000;
+}
+
+.delete-btn {
+    background-color: #ff4444;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.completed {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+/* Priority Badge Styling */
+.priority-badge {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.priority-badge.low {
+    background-color: #90EE90;
+    color: #2a5a2a;
+}
+
+.priority-badge.medium {
+    background-color: #FFD700;
+    color: #6b5d00;
+}
+
+.priority-badge.high {
+    background-color: #FF6347;
+    color: white;
+}
+
+.task-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.task-info {
+    flex-grow: 1;
+}
+
+.task-info p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.due-date {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.overdue {
+    color: #c44536;
+    font-weight: bold;
+}
+
+/* Date input styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.5);
+}
+
+input[type="date"]::-webkit-datetime-edit {
+    padding: 0.2em;
+}
+
+/* Button Styles */
+.button-common {
+    width: 200px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.button-submit {
+    background-color: #197278;
+    color: white;
+}
+
+.button-submit:hover {
+    background-color: #1663aa;
+    box-shadow: 0 4px 12px rgba(25, 114, 120, 0.3);
+}
+
+.delete-btn {
+    background-color: #c44536 !important;
+    color: white !important;
+}
+
+.delete-btn:hover {
+    background-color: #a2372a !important;
+    box-shadow: 0 4px 12px rgba(196, 69, 54, 0.3);
+}
+
+/* Textarea Custom Styling */
+.textarea-custom {
+    min-height: 120px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+/* Select Wrapper (Priority) Styling */
+.select-wrapper {
+    position: relative;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    padding: 10px;
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 5px;
+    width: 100%;
+}
+
