@@ -8,33 +8,41 @@ function updateTime() {
         month: 'long', 
         day: 'numeric' 
     };
-    
-    // Update timestamp di navbar
-    document.getElementById('timestamp').innerText = now.toLocaleDateString('id-ID', options);
-    
-    // Update waktu di time-section
-    document.getElementById('current-time').innerText = now.toLocaleDateString('id-ID', {
+    const timeOptions = {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
-    });
+    };
+    
+    // Update timestamp di navbar
+    document.getElementById('timestamp').innerText = now.toLocaleDateString('id-ID', options);    
+    // Update waktu di time-section
+    document.getElementById('current-time').innerText = now.toLocaleDateString('id-ID', timeOptions);
 }
 
 setInterval(updateTime, 1000);
 updateTime();
+
+// Fungsi untuk memformat teks task
+function formatTaskText(text) {
+    if (!text) return '';
+    return text.toLowerCase().trim()
+               .replace(/\b\w/g, char => char.toUpperCase())
+               .replace(/\s+/g, ' '); // Remove extra spaces between words
+}
 
 function addTask() {
     const taskInput = document.getElementById('task-input');
     const prioritySelect = document.getElementById('priority-select');
     const dueDateInput = document.getElementById('due_date');
     
-    const taskText = taskInput.value.trim();
+    const formattedText = formatTaskText(taskInput.value);
     const priority = prioritySelect.value;
-    let dueDate = dueDateInput.value;
+    let dueDate = dueDateInput.value;;
 
-    // Validasi Task Description
-    if (!taskText) {
-        alert('Task description harus diisi!');
+    // Validasi input
+    if (!formattedText) {
+        alert('Deskripsi tugas harus diisi!');
         taskInput.focus();
         return;
     }
@@ -43,6 +51,18 @@ function addTask() {
     if (!priority) {
         alert('Silakan pilih priority!');
         prioritySelect.focus();
+        return;
+    }
+
+     // Cek duplikasi tugas
+    const isDuplicate = tasks.some(task => 
+        formatTaskText(task.text) === formattedText
+    );
+
+    if (isDuplicate) {
+        alert('Tugas sudah ada dalam daftar!');
+        taskInput.value = formattedText;
+        taskInput.focus();
         return;
     }
 
@@ -56,7 +76,7 @@ function addTask() {
     // Buat task baru
     const newTask = {
         id: Date.now(),
-        text: taskText,
+        text: formattedText,
         priority: priority,
         date: new Date(dueDate),
         completed: false,
@@ -76,13 +96,20 @@ function addTask() {
 
 function toggleTask(id) {
     const task = tasks.find(t => t.id === id);
-    task.completed = !task.completed;
-    task.completedTime = task.completed ? new Date() : null;
-    saveTasks();
-    renderTasks();
+    if (task) {
+        task.completed = !task.completed;
+        task.completedTime = task.completed ? new Date() : null;
+        saveTasks();
+        renderTasks();
+    }
 }
 
 function deleteAllTasks() {
+    if (tasks.length === 0) {
+        alert('Tidak ada tugas yang bisa dihapus!');
+        return;
+    }
+
     if (confirm('Apakah Anda yakin ingin menghapus semua tugas?')) {
         tasks = [];
         saveTasks();
@@ -92,7 +119,8 @@ function deleteAllTasks() {
 
 function isOverdue(taskDate) {
     const today = new Date();
-    return new Date(taskDate).toDateString() < today.toDateString();
+    today.setHours(0, 0, 0, 0); 
+    return new Date(taskDate) < today;
 }
 
 function renderTasks() {
@@ -103,10 +131,11 @@ function renderTasks() {
     doneList.innerHTML = '';
 
     // Sort by priority: High > Medium > Low
-    const sortedTasks = [...tasks].sort((a, b) => {
-        const priorityOrder = { high: 3, medium: 2, low: 1 };
-        return priorityOrder[b.priority] - priorityOrder[a.priority];
-    });
+    const priorityOrder = { high: 3, medium: 2, low: 1 };
+    const sortedTasks = [...tasks].sort((a, b) => 
+        priorityOrder[b.priority] - priorityOrder[a.priority] ||
+        new Date(a.date) - new Date(b.date)
+    );
 
     sortedTasks.forEach(task => {
         const taskElement = document.createElement('div');
@@ -129,7 +158,7 @@ function renderTasks() {
                         <p>${task.text}</p>
                         <small class="due-date ${!task.completed && isOverdue(task.date) ? 'overdue' : ''}">
                             ${dueDate}
-                            ${!task.completed && isOverdue(task.date) ? ' (OVERDUE)' : ''}
+                            ${!task.completed && isOverdue(task.date) ? ' (TERLAMBAT)' : ''}
                         </small>
                     </div>
                 </div>
@@ -138,12 +167,8 @@ function renderTasks() {
                 </div>
             </div>
         `;
-
-        if (task.completed) {
-            doneList.appendChild(taskElement);
-        } else {
-            todoList.appendChild(taskElement);
-        }
+        
+        (task.completed ? doneList : todoList).appendChild(taskElement);
     });
 }
 
@@ -154,9 +179,18 @@ function saveTasks() {
 // Initial setup
 document.addEventListener('DOMContentLoaded', function() {
     // Set default date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('due_date').value = today;
+    const today = new Date();
+    document.getElementById('due_date').value = today.toISOString().split('T')[0];
     
-    // Initial render
+    // Auto-format text when leaving input field
+    document.getElementById('task-input').addEventListener('blur', function() {
+        if (this.value.trim()) {
+            this.value = formatTaskText(this.value);
+        }
+    });
+    
+    // Initialize time and render tasks
+    updateTime();
+    setInterval(updateTime, 1000);
     renderTasks();
 });
