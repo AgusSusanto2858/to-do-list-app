@@ -1,0 +1,1 @@
+Untuk Urutan list disesuaikan dengan priority dan waktu, priority lebih tinggi (high) akan ditaruh lebih atas dalam list dan jika ada priority yang sama tinggi maka yang diatas adalah yang batas waktunya terdekat
