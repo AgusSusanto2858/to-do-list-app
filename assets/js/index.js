@@ -2,7 +2,7 @@ let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
 function updateTime() {
     const now = new Date();
-    const options = { 
+    const dateOptions = { 
         weekday: 'long', 
         year: 'numeric', 
         month: 'long', 
@@ -15,9 +15,9 @@ function updateTime() {
     };
     
     // Update timestamp di navbar
-    document.getElementById('timestamp').innerText = now.toLocaleDateString('id-ID', options);    
+    document.getElementById('timestamp').innerText = now.toLocaleDateString('id-ID', dateOptions);    
     // Update waktu di time-section
-    document.getElementById('current-time').innerText = now.toLocaleDateString('id-ID', timeOptions);
+    document.getElementById('current-time').innerText = now.toLocaleTimeString('id-ID', timeOptions);
 }
 
 setInterval(updateTime, 1000);
@@ -33,8 +33,8 @@ function formatTaskText(text) {
 
 function addTask() {
     const taskInput = document.getElementById('task-input');
-    const prioritySelect = document.getElementById('priority-select');
     const dueDateInput = document.getElementById('due_date');
+    const prioritySelect = document.getElementById('priority-select');
     
     const formattedText = formatTaskText(taskInput.value);
     const priority = prioritySelect.value;
@@ -90,8 +90,8 @@ function addTask() {
     prioritySelect.value = ''; // Reset ke default
     
     // Mengatur tanggal kembali ke hari ini setelah submit
-    const today = new Date();
-    dueDateInput.value = today.toISOString().split('T')[0];
+    const currentDate = new Date();
+    dueDateInput.value = currentDate.toISOString().split('T')[0];
 
     saveTasks();
     renderTasks();
@@ -105,6 +105,10 @@ function toggleTask(id) {
         saveTasks();
         renderTasks();
     }
+}
+
+function escapeTaskText(text) {
+    return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 }
 
 function deleteAllTasks() {
@@ -124,6 +128,15 @@ function isOverdue(taskDate) {
     const today = new Date();
     today.setHours(0, 0, 0, 0); 
     return new Date(taskDate) < today;
+}
+
+// Fungsi hapus task per item
+function deleteTask(id, taskName) {
+    if (confirm(`Apakah Anda yakin ingin menghapus tugas "${taskName}"?`)) {
+        tasks = tasks.filter(task => task.id !== id);
+        saveTasks();
+        renderTasks();
+    }
 }
 
 function renderTasks() {
@@ -167,6 +180,9 @@ function renderTasks() {
                 </div>
                 <div class="task-actions">
                     <span class="priority-badge ${task.priority}">${priorityText}</span>
+                    <button class="delete-task-btn" onclick="deleteTask(${task.id}, '${escapeTaskText(task.text)}')">
+                        <i class="ri-delete-bin-line"></i>
+                    </button>
                 </div>
             </div>
         `;

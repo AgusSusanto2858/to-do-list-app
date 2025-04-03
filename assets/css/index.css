@@ -286,3 +286,17 @@ input[type="date"]::-webkit-datetime-edit {
     width: 100%;
 }
 
+.delete-task-btn {
+    background: none;
+    border: none;
+    color: #c44536;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 8px;
+    transition: transform 0.2s;
+}
+
+.delete-task-btn:hover {
+    color: #a2372a;
+    transform: scale(1.1);
+}
